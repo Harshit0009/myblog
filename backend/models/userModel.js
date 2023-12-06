@@ -34,14 +34,18 @@ const userSchema = new mongoose.Schema({
 
 // encrypting the password before saving it
 userSchema.pre('save', async function(next){ // here pre defines to perform the function operation on the method defined, i.e. 'save'
+    console.log('inside the pre block');
     if(!this.isModified('password')){
         next();
+
     }
-    this.password = bcrypt.hash(this.password, 10);  // becrypt the password to length 10 key
+    this.password = await bcrypt.hash(this.password, 10);  // becrypt the password to length 10 key
+    console.log(this.password);
 })
 
 // comparing the user password, validating before extraction
 userSchema.methods.comparePassword = async function (enteredPassword) {
+    console.log(enteredPassword);
     return await bcrypt.compare(enteredPassword, this.password)
 }
 // methods are the functions that we need to call on schema fields

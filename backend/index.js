@@ -12,11 +12,11 @@ const errorHandler = require("./middlewares/Error")
 
 // import routes
 const authRoutes = require("./routes/authRoutes");
-
+const postRoutes = require("./routes/postRoutes")
 
 // Database
 mongoose
-  .connect(process.env.DB_CONNECT_LOCAL, {
+  .connect(process.env.DB_CONNECT, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
     // useCreateIndex: true,
@@ -34,6 +34,7 @@ app.use(cors());
 
 // routing
 app.use("/api", authRoutes);
+app.use("/api", postRoutes);
 
 // using custom error handling middleware
 app.use(errorHandler);

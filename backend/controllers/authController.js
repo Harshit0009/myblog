@@ -24,20 +24,20 @@ async function handleLogin(req, res, next) {
         const { email, password } = req.body;
         // doing some validation checks on email and password
         if (!email) {
-            return next(new ErrorResponse("please add an email", 403)) // 403 is 
+            return next(new ErrorResponse("please add an email", 403))
         }
         if (!password) {
             return next(new ErrorResponse("Please add a password", 403));
         }
 
-        const user = await User.findOne({ email });
+        const user = await User.findOne({email});
         if (!user) {
-            return next(new ErrorResponse("Invalid Credentials", 400));
+            return next(new ErrorResponse("User not found", 400));
         }
 
         const isMatched = await user.comparePassword(password);
         if (!isMatched) {
-            return next(new ErrorResponse("Invalid Credentials", 400));
+            return next(new ErrorResponse("Invalid Password", 400));
         }
 
         sendTokenResponse(user, 200, res);
